@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_corner">
+
+        <ImageView
+            android:id="@+id/push_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="135dp"
+            android:src="@drawable/bg_upgrade"
+            android:scaleType="fitCenter"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/push_title"
+            android:layout_below="@id/push_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:includeFontPadding="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_big"
+            android:text="title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/push_version"
+            android:layout_below="@id/push_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:text="version"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_sub"
+            android:textStyle="normal"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/push_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/push_title"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_sub"
+            android:text="aaaaaaaaaaaa"
+            android:textStyle="normal" />
+
+        <Button
+            android:id="@+id/push_down_bg"
+            android:layout_below="@id/push_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:background="@drawable/push_pop_ok_selector"
+            android:layout_centerHorizontal="true"
+            android:text="upgrade now"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_normal"
+            android:textStyle="normal" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_close_pushpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/push_pop_cancel_selector"/>
+
+</LinearLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_mask"
+    android:layout_width="328dp"
+    android:layout_height="wrap_content">
+
+    <com.mvcdemo.customview.markbtn.CommonMaskView
+        android:id="@+id/mask_view"
+        android:layout_width="328dp"
+        android:layout_height="48dp"
+        android:background="@drawable/fillet_eight_degrees_primary_bg"/>
+
+    <TextView
+        android:id="@+id/tv_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:text="@string/sub_continue_year"
+        android:textSize="19sp"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:background="@color/transparent" />
+</FrameLayout>

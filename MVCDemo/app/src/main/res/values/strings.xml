@@ -1,0 +1,68 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">MVCDemo</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <!--  main  -->
+    <string name="main_tab1">Tab1</string>
+    <string name="main_tab2">Tab2</string>
+    <string name="main_tab3">Tab3</string>
+
+    <!-- upgrade -->
+    <string name="upgrade_title">Amazing &amp; New Features :</string>
+    <string name="update_version_ok">UPDATE NOW！</string>
+    <string name="what_new_title">"What\'s New(V"<xliff:g id="versionName">%s</xliff:g>")"</string>
+
+    <!--  common string  -->
+    <string name="cancel">CANCEL</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="go_on">CONTINUE</string>
+    <string name="ok">ok</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
+    <string name="empty_tip">Can\'t be empty!</string>
+    <string name="i_know">I Know</string>
+    <string name="rename">rename</string>
+
+    <!-- send email content tips -->
+    <string name="policy_and_agreement">Agree to the <a href="http://adsr.screenrecorder.cc/useragreement.html">User Agreement</a> and <a href="http://adsr.screenrecorder.cc/privacy_policy.html">Privacy Policy</a></string>
+    <string name="send_email_tips">Please help us improve ScreenRecorder by describing the issue in detail. You can also reach us at our facebook page.</string>
+    <string name="action_title_mail">"E-Mail"</string>
+    <string name="email_unavailable">mail application unavailable.</string>
+
+    <!-- billing -->
+    <string name="sub_title">Screen Recorder pro</string>
+    <string name="sub_effect">After upgrading to pro, you will get</string>
+    <string name="sub_month">1 MONTH : $9.99/month</string>
+    <string name="sub_free">3-Day Free Trial</string>
+    <string name="sub_year1">Then extend to an annual subscription for USD 69.99/year. Cancel anytime.</string>
+    <string name="sub_continue_year">continue to free trial</string>
+    <string name="sub_continue_mon">subscribe monthly</string>
+    <string name="sub_failed_title">Failed to creat the billing, it may because</string>
+    <string name="sub_failed_reason1">1. You haven\'t loged in any account on Google Play</string>
+    <string name="sub_failed_reason2">2. Google billing cannot run on this device</string>
+    <string name="sub_suc_desc">You can use all the advanced features</string>
+    <string name="sub_suc_month">A monthly subscription for USD 9.99/month.\nCancel anytime!</string>
+    <string name="sub_suc_year">An annual subscription for USD 69.99/year.\nCancel anytime!</string>
+    <string name="sub_suc_month_old">A monthly subscription for USD 1.99/month.\nCancel anytime!</string>
+    <string name="sub_suc_year_old">An annual subscription for USD 9.99/year.\nCancel anytime!</string>
+    <string name="pro_old_user_tip">You have successfully upgraded it.</string>
+    <string name="subs_success_tip">Subscription successfully. Our app will restart to take effect.</string>
+    <string name="tip">Tips:</string>
+    <string name="remove_ads">Remove ads</string>
+    <string name="pro">pro</string>
+    <string name="sub_year_save">SAVE 60%</string>
+    <string name="sub_future_1080p">1080P HD Recording</string>
+    <string name="sub_future_more">More is coming</string>
+    <string name="sub_try_free">try for free</string>
+    <string name="sub_bottom_content_text">Recurring billing. Cancel anytime. Payment will be charged to Google Pay Account at confirmation of purchase. Your subscription will automatically renew for the same plan length at the same price until you cancel. By subscribing you agree to our term.</string>
+    <string name="sub_continue_text"><u>Continue with Free Version</u></string>
+
+</resources>

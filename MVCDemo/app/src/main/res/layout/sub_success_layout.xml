@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_sub_success"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/pro_iv"
+        android:layout_width="match_parent"
+        android:layout_height="213dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_after_pro" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
+        android:src="@drawable/ic_back_white" />
+
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pro_iv"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:layout_marginTop="46dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:text="@string/app_name"
+            android:textColor="#111111"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="62dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/fillet_primary_bg"
+            android:gravity="center"
+            android:text="@string/pro"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="italic|bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:includeFontPadding="false"
+        android:text="@string/sub_suc_desc"
+        android:textColor="@color/color_transparent_alpha_50"
+        android:textSize="@dimen/font_size_normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tv_sub_success"
+        android:layout_below="@id/tv_desc"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_pro_noad"
+                android:drawablePadding="10dp"
+                android:includeFontPadding="false"
+                android:gravity="center_vertical"
+                android:text="@string/remove_ads"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@drawable/ic_pro_hd1080"
+                android:drawablePadding="10dp"
+                android:includeFontPadding="false"
+                android:gravity="center_vertical"
+                android:text="@string/sub_future_1080p"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@drawable/ic_sub_pro_more"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="@string/sub_future_more"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_small" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_sub_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:textColor="#61484848"
+        android:textSize="@dimen/font_size_small" />
+
+</RelativeLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="config_Email" translatable="false">
+        <item>"YOUR_EMAIL@gmail.com"</item>
+    </string-array>
+
+</resources>

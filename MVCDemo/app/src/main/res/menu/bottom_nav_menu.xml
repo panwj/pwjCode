@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_tab1"
+        android:icon="@drawable/ic_map_selector"
+        android:title="@string/main_tab1" />
+
+    <item
+        android:id="@+id/navigation_tab2"
+        android:icon="@drawable/ic_locale_selector"
+        android:title="@string/main_tab2" />
+
+    <item
+        android:id="@+id/navigation_tab3"
+        android:icon="@drawable/ic_setting_selector"
+        android:title="@string/main_tab3" />
+
+</menu>

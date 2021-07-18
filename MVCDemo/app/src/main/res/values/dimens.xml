@@ -1,0 +1,35 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="margin_big">32dp</dimen>
+    <dimen name="margin_xlarge">30dp</dimen>
+    <dimen name="margin_medium">24dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_minor">10dp</dimen>
+
+    <dimen name="padding_middle">20dp</dimen>
+    <dimen name="padding_small">14dp</dimen>
+    <dimen name="padding_minor">5dp</dimen>
+
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="dp12">12dp</dimen>
+    <dimen name="dp15">15dp</dimen>
+    <dimen name="dp20">20dp</dimen>
+    <dimen name="dp64">64dp</dimen>
+
+    <!-- font size -->
+    <dimen name="font_size_huge">24sp</dimen>
+    <dimen name="font_size_big">20sp</dimen>
+    <dimen name="font_size_normal_p">18sp</dimen>
+    <dimen name="font_size_normal">16sp</dimen>
+    <dimen name="font_size_sub">14sp</dimen>
+    <dimen name="font_size_small">12sp</dimen>
+    <dimen name="font_size_minor">10sp</dimen>
+
+    <!-- dialog button -->
+    <dimen name="btn_width">118dp</dimen>
+    <dimen name="btn_height">36dp</dimen>
+    <dimen name="dialog_width">300dp</dimen>
+    <dimen name="rate_us_dialog_width">296dp</dimen>
+</resources>
