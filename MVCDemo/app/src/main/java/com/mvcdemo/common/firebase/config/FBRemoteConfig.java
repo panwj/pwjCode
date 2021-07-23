@@ -14,47 +14,30 @@ import com.mvcdemo.R;
 
 
 /**
- * Created by mengzhao on 16/5/30.
+ * firebase remoteConfig 工具类
+ * 需要定义一个xml放默认值
  */
 public class FBRemoteConfig {
 
     private static final String TAG = "FBRemoteConfig";
 
-    // popup dialog ads mode config
-    public static final String CONFIG_KEY_STRING_POPUP_ADS_MODE = "string_popup_ads_mode";
-
-    public static final String CONFIG_KEY_BOOL_BOOST_ENABLED = "bool_boost_enabled";
-
-    public static final String CONFIG_KEY_DOUBLE_PRICE = "double_price";
-
     // get app version code config
     public static final String JSON_APP_VERSION_CODE_IN_STORE = "json_app_version_in_store";
 
     //recommend app
-    public static final String CONFIG_KEY_JSON_RECOMMEND_APPS_MENU = "json_recommend_apps_menu";
     public static final String CONFIG_KEY_JSON_RECOMMEND_APPS_SETTING = "json_recommend_apps_settings";
-
-    //for crash dialog config
-    public static final String CONFIG_KEY_BOOL_ENABLE_CRASH_DIALOG = "bool_enable_crash_dialog";
-
-
-    public static final String JSON_NATIVE_POLICY = "json_native_policy";
-
-    // base different install type to load different demand source
-    public static final String JSON_NATIVE_CHANNEL_POLICY = "json_native_channel_policy";
 
     private static final long CACHE_EXPIRATION = 1 * 3600; // 1 HOUR
 
-    private static FBRemoteConfig sInstane = null;
+    private static FBRemoteConfig sInstance = null;
 
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     public static FBRemoteConfig getInstance() {
-        if (sInstane == null) {
-            sInstane = new FBRemoteConfig();
+        if (sInstance == null) {
+            sInstance = new FBRemoteConfig();
         }
-
-        return sInstane;
+        return sInstance;
     }
 
     private FBRemoteConfig() {
@@ -99,16 +82,12 @@ public class FBRemoteConfig {
                             // Once the config is successfully fetched it must be activated before newly fetched
                             // values are returned.
                             mFirebaseRemoteConfig.activateFetched();
-
-//                            ScreenRecorderApplication.getApplication().updateConfig();
-
                         } else {
                             Log.d(TAG, "Remote Config Fetch failed");
                         }
                     }
                 });
     }
-
 
     public FirebaseRemoteConfig getRemoteConfigRef() {
         return mFirebaseRemoteConfig;

@@ -7,30 +7,8 @@
     </entry>
 
     <entry>
-        <key>json_native_policy</key>
-        <value>""</value>
-    </entry>
-
-    <entry>
-        <key>json_native_channel_policy</key>
-        <value>""</value>
-    </entry>
-
-    <entry>
-        <key>json_recommend_apps_menu</key>
-        <value>""</value>
-    </entry>
-
-    <entry>
         <key>json_recommend_apps_settings</key>
         <value>""</value>
     </entry>
-
-    <entry>
-        <key>bool_enable_crash_dialog</key>
-        <value>true</value>
-    </entry>
-
-
 </defaultsMap>
     <!-- END xml_defaults -->

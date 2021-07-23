@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+/**
+ * 实现打点的关键类
+ */
 public class EventLogger {
 
     public static void logEvent(Context context, String trackerName) {

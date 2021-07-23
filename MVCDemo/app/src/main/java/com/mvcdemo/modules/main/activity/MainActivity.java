@@ -26,6 +26,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import com.mvcdemo.R;
+import com.mvcdemo.common.event.Event;
+import com.mvcdemo.common.event.EventLogger;
 import com.mvcdemo.common.firebase.push.PushData;
 import com.mvcdemo.common.firebase.push.PushUtils;
 import com.mvcdemo.common.google.installreferrer.InstallReferrerTool;
@@ -69,14 +71,9 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(this, "版本升级了", Toast.LENGTH_SHORT).show();
         }
 
-        Intent intent = getIntent();
-        PushData pushData = null;
-        if (intent != null) {
-            pushData = intent.getParcelableExtra("push_data");
-        }
-        if (pushData != null) {
-            PushUtils.launcherPushPage(getApplicationContext(), pushData);
-        }
+        //firebase push
+        firebasePush(getIntent());
+        EventLogger.logEvent(this, Event.EVENT_MAIN_OPEN);
     }
 
     @Override
@@ -168,6 +165,23 @@ public class MainActivity extends BaseActivity {
 
     public void updateUI(String string) {
         Snackbar.make(floatingActionButton, string, Snackbar.LENGTH_LONG).show();
+    }
+
+    /**
+     * firebase push 在客户端分为收到前台push，后台收到push
+     * 前台收到push会触发 MyFirebaseMessagingService --》onMessageReceived（）
+     * 后台收到push：系统行为，会在状态栏显示一个通知
+     *
+     * @param intent
+     */
+    private void firebasePush(Intent intent) {
+        PushData pushData = null;
+        if (intent != null) {
+            pushData = intent.getParcelableExtra("push_data");
+        }
+        if (pushData != null) {
+            PushUtils.launcherPushPage(getApplicationContext(), pushData);
+        }
     }
 
 }

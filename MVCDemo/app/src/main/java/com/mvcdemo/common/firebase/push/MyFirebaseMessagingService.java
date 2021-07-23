@@ -33,7 +33,9 @@ import java.util.Map;
 
 import com.mvcdemo.R;
 
-
+/**
+ * firebase push 必须的实现类
+ */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "FBMessagingService";
