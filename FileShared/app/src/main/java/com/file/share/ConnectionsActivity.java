@@ -54,8 +54,6 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
      */
     private final Map<String, Endpoint> mEstablishedConnections = new HashMap<>();
 
-    private final Map<String, Endpoint> mAllEndpoints = new HashMap<>();
-
     /**
      * True if we are asking a discovered device to connect to us. While we ask, we cannot ask another
      * device.
@@ -81,7 +79,6 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
             Endpoint endpoint = new Endpoint(endpointId, connectionInfo.getEndpointName());
             endpoint.setState(ConnectionState.PENDING);
             mPendingConnections.put(endpointId, endpoint);
-            mAllEndpoints.put(endpointId, endpoint);
             ConnectionsActivity.this.onConnectionInitiated(endpoint, connectionInfo);
         }
 
@@ -97,8 +94,6 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
                 logV(String.format(
                                 "Connection failed. Received status %s.",
                                 ConnectionsActivity.toString(result.getStatus())));
-                endpoint.setState(ConnectionState.UNKNOWN);
-                mAllEndpoints.put(endpointId, endpoint);
                 onConnectionFailed(endpoint);
                 return;
             }
@@ -128,7 +123,6 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
                 Endpoint endpoint = new Endpoint(endpointId, info.getEndpointName());
                 endpoint.setState(ConnectionState.UNKNOWN);
                 mDiscoveredEndpoints.put(endpointId, endpoint);
-                mAllEndpoints.put(endpointId, endpoint);
                 onEndpointDiscovered(endpoint);
             }
         }
@@ -136,8 +130,7 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
         @Override
         public void onEndpointLost(@NonNull String endpointId) {
             logD(String.format("onEndpointLost(endpointId=%s)", endpointId));
-            mAllEndpoints.remove(endpointId);
-            onEndpointDiscovered(mDiscoveredEndpoints.remove(endpointId));
+//            onEndpointDiscovered(mDiscoveredEndpoints.remove(endpointId));
         }
     };
 
@@ -151,8 +144,10 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
 
         @Override
         public void onPayloadTransferUpdate(@NonNull String endpointId, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-            logD(String.format(
-                            "onPayloadTransferUpdate(endpointId=%s, update=%s)", endpointId, payloadTransferUpdate));
+//            logD(String.format("onPayloadTransferUpdate(endpointId=%s, update=%s)", endpointId, payloadTransferUpdate));
+            if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                onReceivePayloadTransferUpdate(endpointId, payloadTransferUpdate);
+            }
         }
     };
 
@@ -313,7 +308,6 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
     protected void disconnect(Endpoint endpoint) {
         mConnectionsClient.disconnectFromEndpoint(endpoint.getId());
         mEstablishedConnections.remove(endpoint.getId());
-        mAllEndpoints.remove(endpoint.getId());
     }
 
     /** Disconnects from all currently connected endpoints. */
@@ -322,7 +316,6 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
             mConnectionsClient.disconnectFromEndpoint(endpoint.getId());
         }
         mEstablishedConnections.clear();
-        mAllEndpoints.clear();
     }
 
     /** Resets and clears all state in Nearby Connections. */
@@ -334,7 +327,6 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
         mDiscoveredEndpoints.clear();
         mPendingConnections.clear();
         mEstablishedConnections.clear();
-        mAllEndpoints.clear();
     }
 
     /**
@@ -369,14 +361,12 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
     private void connectedToEndpoint(Endpoint endpoint) {
         logD(String.format("connectedToEndpoint(endpoint=%s)", endpoint));
         mEstablishedConnections.put(endpoint.getId(), endpoint);
-        mAllEndpoints.put(endpoint.getId(), endpoint);
         onEndpointConnected(endpoint);
     }
 
     private void disconnectedFromEndpoint(Endpoint endpoint) {
         logD(String.format("disconnectedFromEndpoint(endpoint=%s)", endpoint));
         mEstablishedConnections.remove(endpoint.getId());
-        mAllEndpoints.remove(endpoint.getId());
         onEndpointDisconnected(endpoint);
     }
 
@@ -403,7 +393,11 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
     }
 
     protected Set<Endpoint> getAllEndpoints() {
-        return new HashSet<>(mAllEndpoints.values());
+        Map<String, Endpoint> allEndpoints = new HashMap<>();
+        allEndpoints.putAll(mDiscoveredEndpoints);
+        allEndpoints.putAll(mPendingConnections);
+        allEndpoints.putAll(mEstablishedConnections);
+        return new HashSet<>(allEndpoints.values());
     }
 
     /**
@@ -434,6 +428,8 @@ public abstract class ConnectionsActivity extends AppCompatActivity implements P
      * @param payload The data.
      */
     protected void onReceive(Endpoint endpoint, Payload payload) {}
+
+    protected void onReceivePayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {}
 
     protected abstract String getName();
 

@@ -45,15 +45,27 @@
 
         <Button
             android:id="@+id/btn_start"
-            android:layout_width="72dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="start"
+            android:layout_marginStart="16dp"
             android:layout_height="36dp" />
 
         <Button
             android:id="@+id/btn_stop"
             android:layout_marginStart="32dp"
-            android:layout_width="72dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="stop"
+            android:layout_height="36dp" />
+
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="share"
             android:layout_height="36dp" />
 
     </LinearLayout>

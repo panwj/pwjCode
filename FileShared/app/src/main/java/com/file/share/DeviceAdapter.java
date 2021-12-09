@@ -16,12 +16,10 @@ import java.util.List;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
 
-    private Context mContext;
     private OnItemClickListener onItemClickListener;
     private List<Endpoint> mData;
 
-    public DeviceAdapter(Context context) {
-        mContext = context;
+    public DeviceAdapter() {
         mData = new ArrayList<>();
     }
 
@@ -35,7 +33,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     @NonNull
     @Override
     public DeviceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.device_info_item_layout, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_info_item_layout, parent, false);
         return new ViewHolder(view);
     }
 
