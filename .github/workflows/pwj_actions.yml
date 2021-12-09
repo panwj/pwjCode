@@ -1,2 +1,23 @@
 
-name pwj_actions
+name: pwj_actions
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:PROJECT_PATH: pwjCode/FileShared
+
+jobs:
+
+  build:
+    name: Build
+    runson: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: ./gradlew assembleRelease
