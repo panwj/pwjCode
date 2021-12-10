@@ -6,7 +6,7 @@ on:
       - '.github/workflows/pwj_actions.yaml'
       - 'FileShared/**'
     branches:
-      - '*'
+      - master
   pull_request:
     paths:
       - '.github/workflows/pwj_actions.yaml'
