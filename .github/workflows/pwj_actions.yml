@@ -13,7 +13,7 @@ on:
 
 jobs:
   build:
-    working_directory: FileShared
+    working_directory: ~/FileShared
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
