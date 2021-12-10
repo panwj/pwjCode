@@ -93,8 +93,6 @@ public class MainActivity extends ConnectionsActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connections_activity_layout);
         initView();
-        int a
-        hhhh
     }
 
     @Override
