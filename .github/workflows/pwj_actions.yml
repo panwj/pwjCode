@@ -5,13 +5,16 @@ on:
     paths:
       - '.github/workflows/pwj_actions.yml'
       - 'FileShared/**'
+      - 'KeepAlive/*'
   pull_request:
     paths:
       - '.github/workflows/pwj_actions.yml'
       - 'FileShared/**'
+      - 'KeepAlive/*'
 
 env:
-  PROJECT_PATH: FileShared
+  FILESHARED_PATH: FileShared
+  KEEPALIVE_PATH: KeepAlive
 
 jobs:
   check:
@@ -25,7 +28,7 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties') }}
       - name: Check style
-        working-directory: ${{ env.PROJECT_PATH }}
+        working-directory: ${{ env.FILESHARED_PATH }}/${{ env.KEEPALIVE_PATH }}
         run: ./gradlew lint
 
   build:
@@ -38,5 +41,5 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties') }}
       - name: Build
-        working-directory: ${{ env.PROJECT_PATH }}
+        working-directory: ${{ env.FILESHARED_PATH }}/${{ env.KEEPALIVE_PATH }}
         run: ./gradlew --parallel assembleRelease
