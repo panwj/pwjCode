@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: set up gradle
-          uses: actions/setup-java@v2
-          with:
-            cache: gradle
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'gradle'
       - name: Build
         run: ./gradlew assembleRelease
