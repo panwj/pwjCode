@@ -28,7 +28,7 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties') }}
       - name: Check style
-        working-directory: ${{ env.FILESHARED_PATH }}/${{ env.KEEPALIVE_PATH }}
+        working-directory: ${{ env.FILESHARED_PATH }} ${{ env.KEEPALIVE_PATH }}
         run: ./gradlew lint
 
   build:
@@ -41,5 +41,5 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties') }}
       - name: Build
-        working-directory: ${{ env.FILESHARED_PATH }}/${{ env.KEEPALIVE_PATH }}
+        working-directory: ${{ env.FILESHARED_PATH }} ${{ env.KEEPALIVE_PATH }}
         run: ./gradlew --parallel assembleRelease
