@@ -14,19 +14,19 @@ env:
   PROJECT_PATH: FileShared
 
 jobs:
-#  check:
-#    name: Check
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 10
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/cache@v2
-#        with:
-#          path: ~/.gradle/caches
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties', '**/buildSrc/src/main/kotlin/**.kt') }}
-#      - name: Check style
-#        working-directory: ${{ env.PROJECT_PATH }}
-#        run: ./gradlew ktlintCheck
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Check style
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: ./gradlew lintCheck
 
   build:
     name: Build
