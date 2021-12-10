@@ -2,27 +2,41 @@
 name: pwj_actions
 on:
   push:
-    branches:
-      - '*'
+    paths:
+      - '.github/workflows/pwj_actions.yml'
+      - 'FileShared/**'
   pull_request:
-    branches:
-      - master
+    paths:
+      - '.github/workflows/pwj_actions.yml'
+      - 'FileShared/**'
 
-#env:
-#PROJECT_PATH: FileShared
+env:
+  PROJECT_PATH: FileShared
 
 jobs:
+#  check:
+#    name: Check
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 10
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/cache@v2
+#        with:
+#          path: ~/.gradle/caches
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties', '**/buildSrc/src/main/kotlin/**.kt') }}
+#      - name: Check style
+#        working-directory: ${{ env.PROJECT_PATH }}
+#        run: ./gradlew ktlintCheck
+
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
+      - uses: actions/cache@v2
         with:
-          java-version: 1.8
-#      - name: Look for gradlew
-#        run: find / -type f -name "gradlew"
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew assembleRelease
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Build
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: ./gradlew --parallel assembleRelease
