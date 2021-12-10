@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: set up gradle
-#          uses: actions/setup-java@v2
+          uses: actions/setup-java@v2
           with:
             cache: gradle
       - name: Build
