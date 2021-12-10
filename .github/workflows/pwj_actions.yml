@@ -8,8 +8,7 @@ on:
     branches:
       - master
 
-env:
-  PROJECT_PATH: FileShared
+env:PROJECT_PATH: FileShared
 
 jobs:
   build:
