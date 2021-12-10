@@ -9,7 +9,7 @@ on:
       - master
 
 env:
-PROJECT_PATH: /FileShared
+PROJECT_PATH: ~/FileShared
 
 jobs:
   build:
