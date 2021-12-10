@@ -2,9 +2,15 @@
 name: pwj_actions
 on:
   push:
+    paths:
+      - '.github/workflows/pwj_actions.yaml'
+      - 'FileShared/**'
     branches:
       - '*'
   pull_request:
+    paths:
+      - '.github/workflows/pwj_actions.yaml'
+      - 'FileShared/**'
     branches:
       - master
 
@@ -24,5 +30,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
+
         working-directory: ${{ env.PROJECT_PATH }}
         run: ./gradlew assembleRelease
