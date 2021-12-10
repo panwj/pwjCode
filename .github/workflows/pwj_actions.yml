@@ -3,7 +3,7 @@ name: pwj_actions
 on:
   push:
     branches:
-      - CI_MASTER
+      - main
   pull_request:
     branches:
       - main
