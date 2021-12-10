@@ -2,15 +2,51 @@
 name: pwj_actions
 on:
   push:
-    branches: [ main ]
+    paths:
+      - '.github/workflows/pwj_actions.yml'
+      - 'FileShared/**'
+      - 'KeepAlive/*'
   pull_request:
-    branches: [ main ]
+    paths:
+      - '.github/workflows/pwj_actions.yml'
+      - 'FileShared/**'
+      - 'KeepAlive/*'
+    branches: [main]
+
+env:
+  FILESHARED_PATH: FileShared
+  KEEPALIVE_PATH: KeepAlive
 
 jobs:
-
-  build:
-    runson: ubuntu-latest
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Check style
+        working-directory: ${{ env.FILESHARED_PATH }}
+        run: ./gradlew lint
+      - name: KeepAlive Check style
+        working-directory: ${{ env.KEEPALIVE_PATH }}
+        run: ./gradlew lint
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle/wrapper/gradle-wrapper.properties') }}
       - name: Build
+        working-directory: ${{ env.FILESHARED_PATH }}
+        run: ./gradlew assembleRelease
+      - name: KeepAlive Build
+        working-directory: ${{ env.KEEPALIVE_PATH }}
         run: ./gradlew assembleRelease
