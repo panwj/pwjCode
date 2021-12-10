@@ -6,7 +6,6 @@ on:
       - '.github/workflows/pwj_actions.yml'
       - 'FileShared/**'
       - 'KeepAlive/*'
-    branches: [*]
   pull_request:
     paths:
       - '.github/workflows/pwj_actions.yml'
