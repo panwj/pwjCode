@@ -40,7 +40,12 @@ public class ImagePHash {
 		c[0] = 1 / Math.sqrt(2.0);
 	}
 
-
+	/**
+	 * 汉明距离比较
+	 * @param s1
+	 * @param s2
+	 * @return
+	 */
 	private int distance(String s1, String s2) {
 		int counter = 0;
 		for (int k = 0; k < s1.length(); k++) {
