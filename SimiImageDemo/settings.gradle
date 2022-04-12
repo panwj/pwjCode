@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "SimiImageDemo"
 include ':app'
+include ':OpencvSdk'
