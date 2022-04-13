@@ -15,6 +15,8 @@ android {
         ndk { abiFilters 'armeabi-v7a', "arm64-v8a" }
     }
 
+    setProperty("archivesBaseName", "SimiImage " + defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + getGitHeadRefsSuffix() + "-" + releaseTime())
+
     signingConfigs {
         release {
             storeFile file('../Untitled')
@@ -28,6 +30,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -49,4 +52,30 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation project(path: ':OpencvSdk')
+}
+
+static def getBuildId() {
+    return new Date().format("yyyyMMddHHmm")
+}
+
+static def releaseTime() {
+    return new Date().format("yyyy-MM-dd-HHmmss")
+}
+
+//提取git commit id
+static def getGitHeadRefsSuffix() {
+    try {
+        def headFile = new File('../.git/HEAD')
+        if (headFile.exists()) {
+            String[] strings = headFile.getText('UTF-8').split(" ");
+            if (strings.size() > 1) {
+                String refFilePath = '../.git/' + strings[1];
+                def refFile = new File(refFilePath.replace("\n", ""));
+                return refFile.getText('UTF-8').substring(0, 7)
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    return ""
 }

@@ -22,6 +22,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PermissionHelper.PermissionCallbacks {
 
+    static {
+        System.loadLibrary("opencv_java4");//加载OpenCV动态库
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
