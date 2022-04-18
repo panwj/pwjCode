@@ -1,13 +1,15 @@
-package com.ex.simi.two;
+package com.ex.simi.normal;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.ex.simi.entry.Group;
 import com.ex.simi.entry.Photo;
+import com.ex.simi.util.BitmapUtil;
 import com.ex.simi.util.Logv;
 
 import java.io.File;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SimilarPhoto {
+public class ImageAHash {
 
     public static List<Group> find(Context context, List<Photo> photos) {
         calculateFingerPrint(context, photos);
@@ -45,6 +47,7 @@ public class SimilarPhoto {
             group.setPhotos(temp);
             groups.add(group);
         }
+        Logv.e("aHash groups : " + groups.size());
 
         return groups;
     }
@@ -57,7 +60,12 @@ public class SimilarPhoto {
                 Logv.e("calculateFingerPrint() 文件不存在 : " + p.getPath());
                 continue;
             }
-            Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(context.getContentResolver(), p.getId(), MediaStore.Images.Thumbnails.MICRO_KIND, null);
+            /**
+             * 首次创建系统缩略图相当耗时
+             * 通过path读取bitmap比较快
+             */
+//            Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(context.getContentResolver(), p.getId(), MediaStore.Images.Thumbnails.MICRO_KIND, null);
+            Bitmap bitmap = BitmapFactory.decodeFile(p.getPath());
             if (bitmap == null) {
                 Logv.e("calculateFingerPrint() 获取缩略图失败");
                 continue;
@@ -101,7 +109,7 @@ public class SimilarPhoto {
             }
         }
 
-        Logv.e("getFingerPrint: " + stringBuilder.toString());
+//        Logv.e("getFingerPrint: " + stringBuilder.toString());
 
         long fingerprint1 = 0;
         long fingerprint2 = 0;

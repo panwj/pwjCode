@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements PermissionHelper.
 
             Glide.with(MainActivity.this)
                     .load(photo.getPath())
-                    .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(imageView);
 

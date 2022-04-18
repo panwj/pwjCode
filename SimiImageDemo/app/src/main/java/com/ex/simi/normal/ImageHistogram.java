@@ -1,4 +1,4 @@
-package com.ex.simi.one;
+package com.ex.simi.normal;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

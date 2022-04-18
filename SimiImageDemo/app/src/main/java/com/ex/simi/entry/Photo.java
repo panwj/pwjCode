@@ -1,5 +1,7 @@
 package com.ex.simi.entry;
 
+import org.opencv.core.Mat;
+
 /**
  * Created by gavin on 2017/3/27.
  */
@@ -18,6 +20,8 @@ public class Photo {
 
     private long finger;
     private String fingerPrint;
+
+    private Mat mat;
 
 
     public long getId() {
@@ -74,5 +78,13 @@ public class Photo {
 
     public void setFinger(long finger) {
         this.finger = finger;
+    }
+
+    public Mat getMat() {
+        return mat;
+    }
+
+    public void setMat(Mat mat) {
+        this.mat = mat;
     }
 }

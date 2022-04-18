@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import com.ex.simi.entry.Photo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +44,8 @@ public class PhotoRepository {
             photo.setName(cursor.getString(2));
             photo.setMimetype(cursor.getString(3));
             photo.setSize(cursor.getLong(4));
+
+            if (TextUtils.isEmpty(photo.getPath()) || !new File(photo.getPath()).exists()) continue;
 
             result.add(photo);
         }

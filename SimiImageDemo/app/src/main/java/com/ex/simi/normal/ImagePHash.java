@@ -1,4 +1,4 @@
-package com.ex.simi.one;
+package com.ex.simi.normal;
 
 import java.awt.Graphics2D;
 import java.awt.color.ColorSpace;
