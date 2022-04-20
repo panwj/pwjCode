@@ -174,7 +174,7 @@ public class ImageCVHistogram {
 //        Logv.e("comPareHist() start...  " + srcMat + "   " + desMat);
         if (srcMat == null || desMat == null) return false;
         double target = Imgproc.compareHist(srcMat, desMat, Imgproc.CV_COMP_BHATTACHARYYA);
-        Logv.e("comPareHist() target : " + target);
+//        Logv.e("comPareHist() target : " + target);
         if (target < STANDARD_VALUE) return true;
         return false;
     }

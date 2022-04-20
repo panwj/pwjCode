@@ -9,7 +9,7 @@ import android.provider.MediaStore;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ex.simi.adapter.SimiAdapter;
@@ -37,8 +37,7 @@ public class SimiImageActivity extends AppCompatActivity {
         setContentView(R.layout.simi_image_activity_layout);
 
         mRecycleView = findViewById(R.id.recycle);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecycleView.setLayoutManager(layoutManager);
+        mRecycleView.setLayoutManager(new GridLayoutManager(this, 4));
         mAdapter = new SimiAdapter(getApplicationContext());
         mRecycleView.setAdapter(mAdapter);
 
@@ -78,11 +77,13 @@ public class SimiImageActivity extends AppCompatActivity {
 
 //            Mat mat = ImageCVHistogram.calculateMatData(picture.getPath());
 //            picture.setMat(mat);
-//
+
 //            if (bitmap != null && !bitmap.isRecycled()) bitmap.recycle();
 //            if (aBitmap != null && !aBitmap.isRecycled()) aBitmap.recycle();
 //            if (dBitmap != null && !dBitmap.isRecycled()) dBitmap.recycle();
         }
+
+        Logv.e("get finger time ---> " + (System.currentTimeMillis() - time) / 1000);
 
         List<PictureGroup> groups = new ArrayList<>();
 
@@ -96,7 +97,7 @@ public class SimiImageActivity extends AppCompatActivity {
                 for (int j = i + 1; j < list.size(); j++) {
                     Picture picture2 = list.get(j);
                     int dDist = ImageHashUtil.hammingDistance(picture1.getDFinger(), picture2.getDFinger(), "dHash");
-                    if (!picture2.isUse() && dDist < 6) {
+                    if (!picture2.isUse() && dDist < 5) {
                         temp.add(picture2);
                         picture2.setUse(true);
                     } else if (!picture2.isUse() && ImageHashUtil.hammingDistance(picture1.getAFinger(), picture2.getAFinger(), "aHash") < 3) {
@@ -114,7 +115,7 @@ public class SimiImageActivity extends AppCompatActivity {
             }
         }
 
-        Logv.e("simiPicture() end : " + ((System.currentTimeMillis() - time) / 1000));
+        Logv.e("simiPicture() end : " + ((System.currentTimeMillis() - time) / 1000) + "   group size = " + groups.size());
 
         mHandler.post(new Runnable() {
             @Override

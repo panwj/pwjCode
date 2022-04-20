@@ -46,31 +46,16 @@ public class ImageHashUtil {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         double[][] grayPixels = getGrayPixels(bitmap, width, height);
-        StringBuffer figure = new StringBuffer();
-        byte[] bytes = new byte[height * width];
+        double[][] reduceGrayPixels = new double[height][height];
         for (int i = 1; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (grayPixels[i][j] >= grayPixels[i - 1][j]) {
-                    figure.append(1);
-                    bytes[i - 1] = 1;
-                } else {
-                    figure.append(0);
-                    bytes[i - 1] = 0;
-                }
+                double pixels = grayPixels[i][j] - grayPixels[i - 1][j];
+                reduceGrayPixels[i-1][j] = pixels;
             }
         }
 
-        long fingerprint1 = 0;
-        long fingerprint2 = 0;
-        for (int i = 0; i < 64; i++) {
-            if (i < 32) {
-                fingerprint1 += (bytes[63 - i] << i);
-            } else {
-                fingerprint2 += (bytes[63 - i] << (i - 31));
-            }
-        }
-
-        long finger = (fingerprint2 << 32) + fingerprint1;
+        double av = getGrayAvg(reduceGrayPixels);
+        long finger = getFingerPrint(reduceGrayPixels, av);
         return finger;
     }
 
@@ -83,6 +68,43 @@ public class ImageHashUtil {
         double grayAvg = getGrayAvg(grayPixels);
         long finger = getFingerPrint(grayPixels, grayAvg);
 //        Logv.e("aHash finger = " + finger);
+
+//        int i;
+//        int i2;
+//        int[] iArr = new int[64];
+//        int i3 = 0;
+//        for (int i4 = 0; i4 < 8; i4++) {
+//            for (int i5 = 0; i5 < 8; i5++) {
+//                int pixel = bitmap.getPixel(i4, i5);
+//                int i6 = (i4 * 8) + i5;
+//                iArr[i6] = (int) ((((double) ((pixel >> 16) & 255)) * 0.3d) + (((double) ((pixel >> 8) & 255)) * 0.59d) + (((double) (pixel & 255)) * 0.11d));
+//                i3 += iArr[i6];
+//            }
+//        }
+//        int i7 = i3 / 64;
+//        long j = 0;
+//        long j2 = 0;
+//        for (int i8 = 0; i8 < 8; i8++) {
+//            for (int i9 = 0; i9 < 8; i9++) {
+//                int i10 = (i8 * 8) + i9;
+//                if (iArr[i10] >= i7) {
+//                    if (i10 < 32) {
+//                        i2 = 1 << i10;
+//                        j2 += (long) i2;
+//                    } else {
+//                        i = 1 << (i10 - 31);
+//                        j += (long) i;
+//                    }
+//                } else if (i10 < 32) {
+//                    i2 = 0 << i10;
+//                    j2 += (long) i2;
+//                } else {
+//                    i = 0 << (i10 - 31);
+//                    j += (long) i;
+//                }
+//            }
+//        }
+//        long finger = (j << 32) + j2;
         return finger;
     }
 
@@ -130,7 +152,7 @@ public class ImageHashUtil {
          * different from the other values and will throw off the average).
          */
         double grayAvg = getGrayAvg(reduceDctVals);
-        Logv.e("pHash 平均灰度值 ： " + grayAvg + "   " + dctVals[0][0]);
+//        Logv.e("pHash 平均灰度值 ： " + grayAvg + "   " + dctVals[0][0]);
 
         /*
          * 6. Further reduce the DCT. This is the magic step. Set the 64 hash
@@ -282,7 +304,7 @@ public class ImageHashUtil {
             ++dist;
             result &= result - 1;
         }
-        Logv.e("hammingDistance() dist = " + dist + "    " + type + "   " + result);
+//        Logv.e("hammingDistance() dist = " + dist + "    " + type);
         return dist;
     }
 }
