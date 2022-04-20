@@ -1,5 +1,11 @@
 package com.ex.simi.normal;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+
+import com.ex.simi.util.Logv;
+
 import java.awt.Graphics2D;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -58,8 +64,7 @@ public class ImagePHash {
 
 	// Returns a 'binary string' (like. 001010111011100010) which is easy to do
 	// a hamming distance on.
-	private String getHash(InputStream is) throws Exception {
-		BufferedImage img = ImageIO.read(is);
+	private String calculateFingerPrint(String path) throws Exception {
 
 		/*
 		 * 1. Reduce size. Like Average Hash, pHash starts with a small image.
@@ -67,21 +72,17 @@ public class ImagePHash {
 		 * really done to simplify the DCT computation and not because it is
 		 * needed to reduce the high frequencies.
 		 */
-		img = resize(img, size, size);
+		Bitmap bitmap = unifiedBitmap(path, size, size);
+		if (bitmap == null || bitmap.isRecycled()) {
+			Logv.e("unifiedBitmap() 格式化缩略图失败");
+			return null;
+		}
 
 		/*
 		 * 2. Reduce color. The image is reduced to a grayscale just to further
 		 * simplify the number of computations.
 		 */
-		img = grayscale(img);
-
-		double[][] vals = new double[size][size];
-
-		for (int x = 0; x < img.getWidth(); x++) {
-			for (int y = 0; y < img.getHeight(); y++) {
-				vals[x][y] = getBlue(img, x, y);
-			}
-		}
+		double[][] vals = getGrayPixels(bitmap, size, size);
 
 		/*
 		 * 3. Compute the DCT. The DCT separates the image into a collection of
@@ -95,6 +96,13 @@ public class ImagePHash {
 		 * just keep the top-left 8x8. Those represent the lowest frequencies in
 		 * the picture.
 		 */
+		double[][] reduceDctVals = new double[smallerSize][smallerSize];
+		for (int x = 0; x < smallerSize; x++) {
+			for (int y = 0; y < smallerSize; y++) {
+				reduceDctVals[x][y] = dctVals[x][y];
+			}
+		}
+		Logv.e("pHash 灰度平均值 1 ： " + getGrayAvg(reduceDctVals));
 		/*
 		 * 5. Compute the average value. Like the Average Hash, compute the mean
 		 * DCT value (using only the 8x8 DCT low-frequency values and excluding
@@ -123,34 +131,73 @@ public class ImagePHash {
 		 */
 		String hash = "";
 
+//		for (int x = 0; x < smallerSize; x++) {
+//			for (int y = 0; y < smallerSize; y++) {
+//				if (x != 0 && y != 0) {
+//					hash += (dctVals[x][y] > avg ? "1" : "0");
+//				}
+//			}
+//		}
+
 		for (int x = 0; x < smallerSize; x++) {
 			for (int y = 0; y < smallerSize; y++) {
-				if (x != 0 && y != 0) {
-					hash += (dctVals[x][y] > avg ? "1" : "0");
-				}
+				hash += (dctVals[x][y] > avg ? "1" : "0");
 			}
 		}
+		Logv.e("pHash hash ： " + hash);
 
 		return hash;
 	}
 
-	private BufferedImage resize(BufferedImage image, int width, int height) {
-		BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(image, 0, 0, width, height, null);
-		g.dispose();
-		return resizedImage;
+	/**
+	 * 统一图片规格
+	 * @param path
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	private Bitmap unifiedBitmap(String path, int width, int height) {
+		Bitmap bitmap = BitmapFactory.decodeFile(path);
+		if (bitmap == null) {
+			Logv.e("unifiedBitmap() 获取缩略图失败");
+			return null;
+		}
+		float scale_width = (float) width / bitmap.getWidth();
+		float scale_height = (float) height / bitmap.getHeight();
+		Matrix matrix = new Matrix();
+		matrix.postScale(scale_width, scale_height);
+
+		Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+		return scaledBitmap;
 	}
 
-	private ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-
-	private BufferedImage grayscale(BufferedImage img) {
-		colorConvert.filter(img, img);
-		return img;
+	private static double[][] getGrayPixels(Bitmap bitmap, int width, int height) {
+		double[][] pixels = new double[height][width];
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				pixels[i][j] = computeGrayValue(bitmap.getPixel(i, j));
+			}
+		}
+		return pixels;
 	}
 
-	private static int getBlue(BufferedImage img, int x, int y) {
-		return (img.getRGB(x, y)) & 0xff;
+	private static double computeGrayValue(int pixel) {
+		int red = (pixel >> 16) & 0xFF;
+		int green = (pixel >> 8) & 0xFF;
+		int blue = (pixel) & 255;
+		return 0.3 * red + 0.59 * green + 0.11 * blue;
+	}
+
+	private static double getGrayAvg(double[][] pixels) {
+		int width = pixels[0].length;
+		int height = pixels.length;
+		int count = 0;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				count += pixels[i][j];
+			}
+		}
+		return count / (width * height);
 	}
 
 	// DCT function stolen from
@@ -176,27 +223,14 @@ public class ImagePHash {
 	}
 
 	/**
-	 * @param srcUrl
-	 * @param canUrl
-	 * @return 	值越小相识度越高，10之内可以简单判断这两张图片内容一致
-	 * @throws Exception
-	 * @throws
-	 */
-	public int distance(URL srcUrl, URL canUrl) throws Exception {
-			String imgStr = this.getHash(srcUrl.openStream());
-			String canStr = this.getHash(canUrl.openStream());
-			return this.distance(imgStr, canStr);
-	}
-
-	/**
-	 * @param srcFile
-	 * @param canFile
+	 * @param srcPath
+	 * @param canPath
 	 * @return 值越小相识度越高，10之内可以简单判断这两张图片内容一致
 	 * @throws Exception
 	 */
-	public int distance(File srcFile, File canFile) throws Exception {
-		String imageSrcFile = this.getHash(new FileInputStream(srcFile));
-		String imageCanFile = this.getHash(new FileInputStream(canFile));
+	public int isSmailPic(String srcPath, String canPath) throws Exception {
+		String imageSrcFile = this.calculateFingerPrint(srcPath);
+		String imageCanFile = this.calculateFingerPrint(canPath);
 		return this.distance(imageSrcFile, imageCanFile);
 	}
 

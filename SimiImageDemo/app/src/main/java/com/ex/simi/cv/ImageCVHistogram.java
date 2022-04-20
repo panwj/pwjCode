@@ -40,7 +40,7 @@ import java.util.List;
 
 public class ImageCVHistogram {
 
-    private static final float STANDARD_VALUE = 0.2f;//相似阀值，可根据实际情况进行调整
+    private static final float STANDARD_VALUE = 0.12f;//相似阀值，可根据实际情况进行调整
 
     public void testHistogramMatch(Context context) {
         long time = System.currentTimeMillis();
@@ -114,7 +114,7 @@ public class ImageCVHistogram {
      * @param bitmap
      * @return
      */
-    private Mat calculateHistData(Bitmap bitmap) {
+    private static Mat calculateHistData(Bitmap bitmap) {
 //        Logv.e("calculateHistData() start... " + bitmap.hashCode());
         Mat mat1 = new Mat();
         Utils.bitmapToMat(bitmap, mat1);
@@ -141,7 +141,7 @@ public class ImageCVHistogram {
      * @param bitmap
      * @return
      */
-    private Mat calculateMatData(Bitmap bitmap) {
+    private static Mat calculateMatData(Bitmap bitmap) {
 //        Logv.e("calculateMatData() start... ");
         Mat mat1 = new Mat();
         Utils.bitmapToMat(bitmap, mat1);
@@ -149,11 +149,15 @@ public class ImageCVHistogram {
         Mat mat_1 = new Mat();
         //颜色转换
         // TODO: 2022/4/13  Imgproc.COLOR_BGR2GRAY，可能影响准确率及效率，需要测试验证
-        Imgproc.cvtColor(mat1, mat_1, Imgproc.COLOR_BGR2HSV);//COLOR_BGR2HSV
+        Imgproc.cvtColor(mat1, mat_1, Imgproc.COLOR_BGR2GRAY);//COLOR_BGR2HSV
         convertType(mat_1);
         recycleBitmap(bitmap);
 //        Logv.e("calculateMatData() end... ");
         return mat_1;
+    }
+
+    public static Mat calculateMatData(String path) {
+        return calculateHistData(createBitmap(path));
     }
 
     /**
@@ -161,16 +165,16 @@ public class ImageCVHistogram {
      * @param srcMat
      * @return
      */
-    private Mat convertType(Mat srcMat) {
+    private static Mat convertType(Mat srcMat) {
         srcMat.convertTo(srcMat, CvType.CV_32F);
         return srcMat;
     }
 
-    private boolean comPareHist(Mat srcMat, Mat desMat) {
+    public static boolean comPareHist(Mat srcMat, Mat desMat) {
 //        Logv.e("comPareHist() start...  " + srcMat + "   " + desMat);
         if (srcMat == null || desMat == null) return false;
         double target = Imgproc.compareHist(srcMat, desMat, Imgproc.CV_COMP_BHATTACHARYYA);
-//        Logv.e("comPareHist() target : " + target);
+        Logv.e("comPareHist() target : " + target);
         if (target < STANDARD_VALUE) return true;
         return false;
     }
@@ -203,7 +207,7 @@ public class ImageCVHistogram {
      * @param path
      * @return
      */
-    private Bitmap createBitmap(String path) {
+    private static Bitmap createBitmap(String path) {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -244,7 +248,7 @@ public class ImageCVHistogram {
         return scaledBitmap;
     }
 
-    private void recycleBitmap(Bitmap thumb) {
+    private static void recycleBitmap(Bitmap thumb) {
         if(thumb != null && !thumb.isRecycled()){
             thumb.recycle();
             thumb = null;

@@ -25,6 +25,7 @@
         </activity>
 
         <activity android:name=".GroupActivity" />
+        <activity android:name=".SimiImageActivity" />
     </application>
 
 </manifest>

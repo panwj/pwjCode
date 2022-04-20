@@ -35,8 +35,16 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
-        final List<Photo> photos = PhotoRepository.getPhoto(this);
+//        final List<Photo> photos = PhotoRepository.getPhoto(this);
         final ListView listView = (ListView) findViewById(R.id.list);
+        List<Photo> photos = new ArrayList<>();
+        Photo photo1 = new Photo();
+        photo1.setPath("/storage/emulated/0/Pictures/图片/BC214994-CFCE-451C-8789-89C3CB5BB154_4_5005_c.jpeg");
+
+        Photo photo2 = new Photo();
+        photo2.setPath("/storage/emulated/0/Pictures/图片/207BC41F-ED8A-4394-A13B-8EA9D36BA6AD_1_105_c.jpeg");
+        photos.add(photo1);
+        photos.add(photo2);
 
         mHandler = new Handler(getMainLooper());
 

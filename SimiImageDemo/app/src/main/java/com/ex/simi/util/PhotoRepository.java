@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.ex.simi.entry.Photo;
+import com.ex.simi.entry.Picture;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,6 +54,36 @@ public class PhotoRepository {
         if (cursor != null) cursor.close();
 
         Logv.e("getPhoto: size = " + result.size());
+
+        return result;
+    }
+
+    public static List<Picture> getPictures(Context context) {
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        ContentResolver contentResolver = context.getContentResolver();
+        String sortOrder = MediaStore.Images.Media.DATE_TAKEN + " desc";
+        Cursor cursor = contentResolver.query(uri, STORE_IMAGES, null, null, sortOrder);
+
+        List<Picture> result = new ArrayList<>();
+
+        while (cursor != null && cursor.moveToNext()) {
+//            if (result.size() > 50) break;
+            Picture picture = new Picture();
+
+            picture.setId(cursor.getLong(0));
+            picture.setPath(cursor.getString(1));
+            picture.setName(cursor.getString(2));
+            picture.setMimetype(cursor.getString(3));
+            picture.setSize(cursor.getLong(4));
+
+//            if (TextUtils.isEmpty(picture.getPath()) || !new File(picture.getPath()).exists()) continue;
+
+            result.add(picture);
+        }
+
+        if (cursor != null) cursor.close();
+
+        Logv.e("getPictures: size = " + result.size());
 
         return result;
     }
