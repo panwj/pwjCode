@@ -108,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements PermissionHelper.
         }
     }
 
+    public void setting(View view) {
+        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+        startActivity(intent);
+    }
+
     private class Adapter extends BaseAdapter {
         List<Photo> photos;
 

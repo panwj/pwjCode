@@ -27,6 +27,7 @@ public class PhotoRepository {
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.ImageColumns.MIME_TYPE,
             MediaStore.Images.Media.SIZE,
+            MediaStore.Images.Media.DATE_TAKEN,
     };
 
     public static List<Photo> getPhoto(Context context) {
@@ -58,11 +59,13 @@ public class PhotoRepository {
         return result;
     }
 
-    public static List<Picture> getPictures(Context context) {
+    public static List<Picture> getPictures(Context context, long id) {
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         ContentResolver contentResolver = context.getContentResolver();
         String sortOrder = MediaStore.Images.Media.DATE_TAKEN + " desc";
-        Cursor cursor = contentResolver.query(uri, STORE_IMAGES, null, null, sortOrder);
+        String selection = MediaStore.Images.Media._ID + ">?";
+        String[] selectionArgs = new String[]{"" + id};
+        Cursor cursor = contentResolver.query(uri, STORE_IMAGES, selection, selectionArgs, null);
 
         List<Picture> result = new ArrayList<>();
 
@@ -70,13 +73,14 @@ public class PhotoRepository {
 //            if (result.size() > 50) break;
             Picture picture = new Picture();
 
-            picture.setId(cursor.getLong(0));
-            picture.setPath(cursor.getString(1));
-            picture.setName(cursor.getString(2));
-            picture.setMimetype(cursor.getString(3));
-            picture.setSize(cursor.getLong(4));
+            picture.id = cursor.getLong(0);
+            picture.path = cursor.getString(1);
+            picture.name = cursor.getString(2);
+            picture.mimetype = cursor.getString(3);
+            picture.size = cursor.getLong(4);
+            picture.takeDate = cursor.getLong(5);
 
-//            if (TextUtils.isEmpty(picture.getPath()) || !new File(picture.getPath()).exists()) continue;
+//            if (TextUtils.isEmpty(picture.path) || !new File(picture.path).exists()) continue;
 
             result.add(picture);
         }

@@ -40,7 +40,7 @@ import java.util.List;
 
 public class ImageCVHistogram {
 
-    private static final float STANDARD_VALUE = 0.12f;//相似阀值，可根据实际情况进行调整
+    private static final float STANDARD_VALUE = 0.09f;//相似阀值，可根据实际情况进行调整
 
     public void testHistogramMatch(Context context) {
         long time = System.currentTimeMillis();
@@ -114,7 +114,7 @@ public class ImageCVHistogram {
      * @param bitmap
      * @return
      */
-    private static Mat calculateHistData(Bitmap bitmap) {
+    public static Mat calculateHistData(Bitmap bitmap) {
 //        Logv.e("calculateHistData() start... " + bitmap.hashCode());
         Mat mat1 = new Mat();
         Utils.bitmapToMat(bitmap, mat1);
@@ -141,7 +141,7 @@ public class ImageCVHistogram {
      * @param bitmap
      * @return
      */
-    private static Mat calculateMatData(Bitmap bitmap) {
+    public static Mat calculateMatData(Bitmap bitmap) {
 //        Logv.e("calculateMatData() start... ");
         Mat mat1 = new Mat();
         Utils.bitmapToMat(bitmap, mat1);
@@ -149,15 +149,11 @@ public class ImageCVHistogram {
         Mat mat_1 = new Mat();
         //颜色转换
         // TODO: 2022/4/13  Imgproc.COLOR_BGR2GRAY，可能影响准确率及效率，需要测试验证
-        Imgproc.cvtColor(mat1, mat_1, Imgproc.COLOR_BGR2GRAY);//COLOR_BGR2HSV
+        Imgproc.cvtColor(mat1, mat_1, Imgproc.COLOR_BGR2HSV);//COLOR_BGR2HSV
         convertType(mat_1);
         recycleBitmap(bitmap);
 //        Logv.e("calculateMatData() end... ");
         return mat_1;
-    }
-
-    public static Mat calculateMatData(String path) {
-        return calculateHistData(createBitmap(path));
     }
 
     /**

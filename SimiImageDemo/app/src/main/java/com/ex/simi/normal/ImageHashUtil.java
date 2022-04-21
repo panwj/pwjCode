@@ -281,12 +281,9 @@ public class ImageHashUtil {
             return null;
         }
         Bitmap scaledBitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height);
-//        float scale_width = (float) width / bitmap.getWidth();
-//        float scale_height = (float) height / bitmap.getHeight();
-//        Matrix matrix = new Matrix();
-//        matrix.postScale(scale_width, scale_height);
-//
-//        Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+//        if (scaledBitmap != null && scaledBitmap.getConfig() != Bitmap.Config.ARGB_8888) {
+//            scaledBitmap.setConfig(Bitmap.Config.ARGB_8888);
+//        }
         return scaledBitmap;
     }
 

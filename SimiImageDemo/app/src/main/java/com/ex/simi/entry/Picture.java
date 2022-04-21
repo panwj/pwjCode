@@ -1,116 +1,86 @@
 package com.ex.simi.entry;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import org.opencv.core.Mat;
 
-public class Picture {
+@Entity(tableName = "picture_table")
+public class Picture implements Parcelable {
 
-    private long id;
+    @PrimaryKey
+    public long id;
+    @ColumnInfo
+    public String path;
+    @ColumnInfo
+    public String name;
+    @ColumnInfo
+    public String mimetype;
+    @ColumnInfo
+    public long size;
+    @ColumnInfo
+    public long takeDate;
+    @ColumnInfo
+    public long a_finger;
+    @ColumnInfo
+    public long p_finger;
+    @ColumnInfo
+    public long d_finger;
+    @Ignore
+    public Mat mat;
+    @Ignore
+    public int type = -1;
+    @Ignore
+    public boolean isUse;
 
-    private String path;
+    public Picture() {
 
-    private String name;
-
-    private String mimetype;
-
-    private long size;
-
-    private long a_finger;
-
-    private long p_finger;
-
-    private long d_finger;
-
-    private Mat mat;
-
-    private int type = -1;
-
-    private boolean isUse;
-
-    public long getId() {
-        return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public static final Creator<Picture> CREATOR = new Creator<Picture>() {
+        @Override
+        public Picture createFromParcel(Parcel source) {
+            return new Picture(source);
+        }
+
+        @Override
+        public Picture[] newArray(int size) {
+            return new Picture[size];
+        }
+    };
+
+    protected Picture(Parcel in) {
+        this.id = in.readLong();
+        this.path = in.readString();
+        this.name = in.readString();
+        this.mimetype = in.readString();
+        this.size = in.readLong();
+        this.takeDate = in.readLong();
+        this.a_finger = in.readLong();
+        this.p_finger = in.readLong();
+        this.d_finger = in.readLong();
     }
 
-    public String getPath() {
-        return path;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMimetype() {
-        return mimetype;
-    }
-
-    public void setMimetype(String mimetype) {
-        this.mimetype = mimetype;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    public long getAFinger() {
-        return a_finger;
-    }
-
-    public void setAFinger(long a_finger) {
-        this.a_finger = a_finger;
-    }
-
-    public long getPFinger() {
-        return p_finger;
-    }
-
-    public void setPFinger(long p_finger) {
-        this.p_finger = p_finger;
-    }
-
-    public long getDFinger() {
-        return d_finger;
-    }
-
-    public void setDFinger(long d_finger) {
-        this.d_finger = d_finger;
-    }
-
-    public Mat getMat() {
-        return mat;
-    }
-
-    public void setMat(Mat mat) {
-        this.mat = mat;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public boolean isUse() {
-        return isUse;
-    }
-
-    public void setUse(boolean use) {
-        isUse = use;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.path);
+        dest.writeString(this.name);
+        dest.writeString(this.mimetype);
+        dest.writeLong(this.size);
+        dest.writeLong(this.takeDate);
+        dest.writeLong(this.a_finger);
+        dest.writeLong(this.p_finger);
+        dest.writeLong(this.d_finger);
     }
 }

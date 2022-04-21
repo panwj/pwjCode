@@ -35,7 +35,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
         List<Picture> temp = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             Picture picture = new Picture();
-            picture.setType(i);
+            picture.type = i;
             temp.add(picture);
             temp.addAll(list.get(i).getPicture());
         }
@@ -68,7 +68,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return mList.get(position).getType();
+        return mList.get(position).type;
     }
 
     @NonNull
@@ -110,7 +110,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
         }
 
         public void setTitle(Picture picture) {
-            title.setText(String.valueOf(picture.getType()));
+            title.setText(String.valueOf(picture.type));
         }
     }
 
@@ -124,7 +124,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
 
         public void setIcon(Picture picture) {
             Glide.with(mContext)
-                    .load(picture.getPath())
+                    .load(picture.path)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(icon);
