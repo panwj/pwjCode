@@ -281,9 +281,9 @@ public class ImageHashUtil {
             return null;
         }
         Bitmap scaledBitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height);
-//        if (scaledBitmap != null && scaledBitmap.getConfig() != Bitmap.Config.ARGB_8888) {
-//            scaledBitmap.setConfig(Bitmap.Config.ARGB_8888);
-//        }
+        if (scaledBitmap != null && scaledBitmap.getConfig() != Bitmap.Config.ARGB_8888) {
+            scaledBitmap.setConfig(Bitmap.Config.ARGB_8888);
+        }
         return scaledBitmap;
     }
 

@@ -28,6 +28,7 @@ import com.ex.simi.util.PhotoRepository;
 import org.opencv.core.Mat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SimiImageActivity extends AppCompatActivity {
@@ -38,7 +39,7 @@ public class SimiImageActivity extends AppCompatActivity {
     private TextView mTimeView;
     private Handler mHandler;
     private int sampleSize;
-    private boolean dHash, aHash, desc;
+    private boolean dHash, aHash, opencv, desc;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class SimiImageActivity extends AppCompatActivity {
         dHash = sharedPreferences.getBoolean("dHash", true);
         aHash = sharedPreferences.getBoolean("aHash", true);
         desc = sharedPreferences.getBoolean("desc", true);
+        opencv = sharedPreferences.getBoolean("opencv", false);
 
         mProgressBar = findViewById(R.id.progress_circular);
         updateProgressBar(View.VISIBLE);
@@ -93,7 +95,7 @@ public class SimiImageActivity extends AppCompatActivity {
 
         for (Picture picture : listSys) {
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 //            options.inMutable = true;
             options.inSampleSize = sampleSize;
             Bitmap bitmap = BitmapFactory.decodeFile(picture.path, options);
@@ -106,10 +108,6 @@ public class SimiImageActivity extends AppCompatActivity {
             long aFinger = ImageHashUtil.calculateFingerPrintAHash(aBitmap);
             picture.a_finger = aFinger;
 
-//            Bitmap cvBitmap = ImageHashUtil.unifiedBitmap(bitmap, 64, 64);
-//            Mat mat = ImageCVHistogram.calculateMatData(aBitmap);
-//            picture.setMat(mat);
-
             if (bitmap != null && !bitmap.isRecycled()) bitmap.recycle();
             if (aBitmap != null && !aBitmap.isRecycled()) aBitmap.recycle();
             if (dBitmap != null && !dBitmap.isRecycled()) dBitmap.recycle();
@@ -120,36 +118,26 @@ public class SimiImageActivity extends AppCompatActivity {
         List<Picture> list = desc ? PictureDaoManager.getDatabase(context).getPictureDao().getPictureDesc()
                 : PictureDaoManager.getDatabase(context).getPictureDao().getPicture();
 
-        Logv.e("get finger time ---> " + (System.currentTimeMillis() - time) / 1000);
+        if (opencv) {
+            for (Picture picture : list) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                options.inMutable = true;
+                options.inSampleSize = sampleSize;
+                Bitmap bitmap = BitmapFactory.decodeFile(picture.path, options);
 
-        List<PictureGroup> groups = new ArrayList<>();
+                Bitmap cvBitmap = ImageHashUtil.unifiedBitmap(bitmap, 64, 64);
+                Mat mat = ImageCVHistogram.calculateHistData(cvBitmap);
+                picture.mat = mat;
 
-        for (int i = 0; i < list.size(); i++) {
-            Picture picture1 = list.get(i);
-
-            if (!picture1.isUse) {
-                List<Picture> temp = new ArrayList<>();
-                temp.add(picture1);
-
-                for (int j = i + 1; j < list.size(); j++) {
-                    Picture picture2 = list.get(j);
-                     if (dHash && !picture2.isUse && ImageHashUtil.hammingDistance(picture1.d_finger, picture2.d_finger, "dHash") < 5) {
-                        temp.add(picture2);
-                        picture2.isUse = true;
-                    } else if (aHash && !picture2.isUse && ImageHashUtil.hammingDistance(picture1.a_finger, picture2.a_finger, "aHash") < 3) {
-                        temp.add(picture2);
-                         picture2.isUse = true;
-                    } else if (!picture2.isUse && ImageCVHistogram.comPareHist(picture1.mat, picture2.mat)) {
-                        temp.add(picture2);
-                         picture2.isUse = true;
-                    }
-                }
-
-                PictureGroup group = new PictureGroup();
-                group.setPicture(temp);
-                groups.add(group);
+                if (bitmap != null && !bitmap.isRecycled()) bitmap.recycle();
+                if (cvBitmap != null && !cvBitmap.isRecycled()) cvBitmap.recycle();
             }
         }
+
+        Logv.e("get finger time ---> " + (System.currentTimeMillis() - time) / 1000);
+
+        List<PictureGroup> groups = compareFinger(list, aHash, dHash, opencv, 2, 2);
 
         Logv.e("simiPicture() end : " + ((System.currentTimeMillis() - time) / 1000) + "   group size = " + groups.size());
 
@@ -162,5 +150,49 @@ public class SimiImageActivity extends AppCompatActivity {
                 mAdapter.setData(groups);
             }
         });
+    }
+
+    private List<PictureGroup> compareFinger(List<Picture> list, boolean aHash, boolean dHash, boolean opencv, int aDist, int dDist) {
+        List<PictureGroup> groups = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            Picture picture1 = list.get(i);
+
+            if (!picture1.isUse) {
+                List<Picture> temp = new ArrayList<>();
+                temp.add(picture1);
+
+                for (int j = i + 1; j < list.size(); j++) {
+                    Picture picture2 = list.get(j);
+                    if (dHash && !picture2.isUse && ImageHashUtil.hammingDistance(picture1.d_finger, picture2.d_finger, "dHash") < dDist) {
+                        temp.add(picture2);
+                        picture2.isUse = true;
+                    } else if (aHash && !picture2.isUse && ImageHashUtil.hammingDistance(picture1.a_finger, picture2.a_finger, "aHash") < aDist) {
+                        temp.add(picture2);
+                        picture2.isUse = true;
+                    } else if (opencv && !picture2.isUse && ImageCVHistogram.comPareHist(picture1.mat, picture2.mat)) {
+                        temp.add(picture2);
+                        picture2.isUse = true;
+                    }
+                }
+
+                PictureGroup group = new PictureGroup();
+                group.setPicture(temp);
+                groups.add(group);
+            }
+        }
+        return groups;
+    }
+
+    private List<Picture> arrangementGroupsList(List<PictureGroup> groups) {
+        List<Picture> temp = new ArrayList<>();
+        for (PictureGroup group : groups) {
+            for (Picture picture : group.getPicture()) {
+                picture.isUse = false;
+                temp.add(picture);
+            }
+        }
+        Logv.e("arrangementGroupsList() temp : " + temp.size());
+        return temp;
     }
 }

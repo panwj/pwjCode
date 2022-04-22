@@ -20,9 +20,9 @@ import com.ex.simi.util.Logv;
 public class SettingActivity extends AppCompatActivity {
 
     private EditText mEditText;
-    private CheckBox mDCb, mACb, mDescCb;
+    private CheckBox mDCb, mACb, mOpencv, mDescCb;
     private TextView mOk;
-    private boolean dHash = true, aHash = true, desc;
+    private boolean dHash = true, aHash = true, opencv, desc;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class SettingActivity extends AppCompatActivity {
         mDCb = findViewById(R.id.cb_dHash);
         mACb = findViewById(R.id.cb_aHash);
         mDescCb = findViewById(R.id.cb_desc);
+        mOpencv = findViewById(R.id.cb_cv);
         mOk = findViewById(R.id.ok);
 
         SharedPreferences sharedPreferences = getSharedPreferences(getApplicationContext().getPackageName() + "_preferences", Context.MODE_PRIVATE);
@@ -41,11 +42,13 @@ public class SettingActivity extends AppCompatActivity {
         dHash = sharedPreferences.getBoolean("dHash", true);
         aHash = sharedPreferences.getBoolean("aHash", true);
         desc = sharedPreferences.getBoolean("desc", true);
+        opencv = sharedPreferences.getBoolean("opencv", false);
 //        Logv.e("setting sampleSize : " + sampleSize + "   dHash : " + dHash + "  aHash : " + aHash + "  desc : " + desc);
 
         mDCb.setChecked(dHash);
         mACb.setChecked(aHash);
         mDescCb.setChecked(desc);
+        mOpencv.setChecked(opencv);
         mEditText.setText("" + sampleSize);
 
         mDCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -69,6 +72,13 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        mOpencv.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                opencv = isChecked;
+            }
+        });
+
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +89,7 @@ public class SettingActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (!(dHash || aHash)) {
+                if (!(dHash || aHash || opencv)) {
                     Toast.makeText(SettingActivity.this, "dHash 或 aHash 必须设置", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -88,6 +98,7 @@ public class SettingActivity extends AppCompatActivity {
                 editor.putInt("sampleSize", Integer.valueOf(sm));
                 editor.putBoolean("dHash", dHash);
                 editor.putBoolean("aHash", aHash);
+                editor.putBoolean("opencv", opencv);
                 editor.putBoolean("desc", desc);
                 editor.commit();
                 new Thread(new Runnable() {
