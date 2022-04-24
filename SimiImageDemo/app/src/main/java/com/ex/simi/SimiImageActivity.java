@@ -135,7 +135,7 @@ public class SimiImageActivity extends AppCompatActivity {
             }
         }
 
-        Logv.e("get finger time ---> " + (System.currentTimeMillis() - time) / 1000);
+        Logv.e("get finger time ---> " + (System.currentTimeMillis() - time) / 1000 + "    list.size() = " + list.size());
 
         List<PictureGroup> groups = compareFinger(list, aHash, dHash, opencv, 2, 2);
 
