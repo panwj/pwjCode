@@ -114,7 +114,7 @@ public class ImageCVHistogram {
      * @param bitmap
      * @return
      */
-    public static Mat calculateHistData(Bitmap bitmap) {
+    public static Mat[] calculateHistData(Bitmap bitmap) {
 //        Logv.e("calculateHistData() start... " + bitmap.hashCode());
         Mat mat1 = new Mat();
         Utils.bitmapToMat(bitmap, mat1);
@@ -125,15 +125,20 @@ public class ImageCVHistogram {
         Imgproc.cvtColor(mat1, mat_1, Imgproc.COLOR_BGR2HSV);
         convertType(mat_1);
 
-        Mat hist_1 = new Mat();
+        Mat hist_b = new Mat();
+        Mat hist_g = new Mat();
+        Mat hist_r = new Mat();
+        Mat[] mats = new Mat[]{hist_b, hist_g, hist_r};
         //颜色范围
         MatOfFloat ranges = new MatOfFloat(0f, 256f);
         //直方图大小， 越大匹配越精确 (越慢)
         MatOfInt histSize = new MatOfInt(200);
-        Imgproc.calcHist(Arrays.asList(mat_1), new MatOfInt(0), new Mat(), hist_1, histSize, ranges);
+        Imgproc.calcHist(Arrays.asList(mat_1), new MatOfInt(0), new Mat(), mats[0], histSize, ranges);
+        Imgproc.calcHist(Arrays.asList(mat_1), new MatOfInt(1), new Mat(), mats[1], histSize, ranges);
+        Imgproc.calcHist(Arrays.asList(mat_1), new MatOfInt(2), new Mat(), mats[2], histSize, ranges);
         recycleBitmap(bitmap);
 //        Logv.e("calculateHistData() end... ");
-        return hist_1;
+        return mats;
     }
 
     /**

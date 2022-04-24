@@ -127,8 +127,8 @@ public class SimiImageActivity extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeFile(picture.path, options);
 
                 Bitmap cvBitmap = ImageHashUtil.unifiedBitmap(bitmap, 64, 64);
-                Mat mat = ImageCVHistogram.calculateHistData(cvBitmap);
-                picture.mat = mat;
+                Mat[] mats = ImageCVHistogram.calculateHistData(cvBitmap);
+                picture.mats = mats;
 
                 if (bitmap != null && !bitmap.isRecycled()) bitmap.recycle();
                 if (cvBitmap != null && !cvBitmap.isRecycled()) cvBitmap.recycle();
@@ -170,7 +170,10 @@ public class SimiImageActivity extends AppCompatActivity {
                     } else if (aHash && !picture2.isUse && ImageHashUtil.hammingDistance(picture1.a_finger, picture2.a_finger, "aHash") < aDist) {
                         temp.add(picture2);
                         picture2.isUse = true;
-                    } else if (opencv && !picture2.isUse && ImageCVHistogram.comPareHist(picture1.mat, picture2.mat)) {
+                    } else if (opencv && !picture2.isUse
+                            && ImageCVHistogram.comPareHist(picture1.mats[0], picture2.mats[0])
+                            && ImageCVHistogram.comPareHist(picture1.mats[1], picture2.mats[1])
+                            && ImageCVHistogram.comPareHist(picture1.mats[2], picture2.mats[2])) {
                         temp.add(picture2);
                         picture2.isUse = true;
                     }

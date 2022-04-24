@@ -37,6 +37,8 @@ public class Picture implements Parcelable {
     public int type = -1;
     @Ignore
     public boolean isUse;
+    @Ignore
+    public Mat[] mats;
 
     public Picture() {
 
