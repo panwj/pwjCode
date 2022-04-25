@@ -1,6 +1,7 @@
 package com.ex.simi.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.ex.simi.PictureActivity;
 import com.ex.simi.R;
 import com.ex.simi.entry.Picture;
 import com.ex.simi.entry.PictureGroup;
@@ -56,7 +58,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    return getItemViewType(position) == -1 ? 1 : 4;
+                    return getItemViewType(position) == -1 ? 1 : 3;
                 }
             });
         }
@@ -126,9 +128,18 @@ public class SimiAdapter extends RecyclerView.Adapter {
         public void setIcon(Picture picture) {
             Glide.with(mContext)
                     .load(picture.path)
-                    .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(icon);
+            icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(mContext, PictureActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("picture_path", picture.path);
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }

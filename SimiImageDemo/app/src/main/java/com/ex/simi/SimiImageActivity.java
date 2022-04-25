@@ -47,7 +47,7 @@ public class SimiImageActivity extends AppCompatActivity {
         setContentView(R.layout.simi_image_activity_layout);
 
         mRecycleView = findViewById(R.id.recycle);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this, 4));
+        mRecycleView.setLayoutManager(new GridLayoutManager(this, 3));
         mAdapter = new SimiAdapter(getApplicationContext());
         mRecycleView.setAdapter(mAdapter);
 
@@ -155,7 +155,7 @@ public class SimiImageActivity extends AppCompatActivity {
             public void run() {
                 if (isDestroyed() || isFinishing()) return;
                 updateProgressBar(View.GONE);
-                mTimeView.setText("扫描完成耗时 ： " + ((System.currentTimeMillis() - time) / 1000) + " 秒, " + groups.size() + " 组");
+                mTimeView.setText("扫描耗时 ：" + ((System.currentTimeMillis() - time) / 1000) + " 秒, " + groups.size() + " 组，" + "总图：" + list.size());
                 mAdapter.setData(groups);
             }
         });
