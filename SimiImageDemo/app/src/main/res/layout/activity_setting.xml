@@ -80,8 +80,62 @@
         app:layout_constraintTop_toTopOf="@id/cb_cv"
         app:layout_constraintBottom_toBottomOf="@id/cb_cv"
         app:layout_constraintStart_toEndOf="@id/cb_cv"
-        android:text="opencv比较"
+        android:text="仅opencv比较"
         android:layout_width="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/cb_ad"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="24dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cb_cv"/>
+
+    <TextView
+        app:layout_constraintTop_toTopOf="@id/cb_ad"
+        app:layout_constraintBottom_toBottomOf="@id/cb_ad"
+        app:layout_constraintStart_toEndOf="@id/cb_ad"
+        android:text="aHash, dHash"
+        android:layout_width="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/cb_pro1"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="24dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cb_ad"/>
+
+    <TextView
+        app:layout_constraintTop_toTopOf="@id/cb_pro1"
+        app:layout_constraintBottom_toBottomOf="@id/cb_pro1"
+        app:layout_constraintStart_toEndOf="@id/cb_pro1"
+        android:text="dHash、aHash、opencv只要一种相似就判断定为相似"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/cb_pro2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="24dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cb_pro1"/>
+
+    <TextView
+        app:layout_constraintTop_toTopOf="@id/cb_pro2"
+        app:layout_constraintBottom_toBottomOf="@id/cb_pro2"
+        app:layout_constraintStart_toEndOf="@id/cb_pro2"
+        android:text="dHash、aHash先相似比较，在对相似的组用opencv再分"
+        android:layout_width="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_height="wrap_content" />
 
@@ -93,8 +147,20 @@
         android:layout_margin="24dp"
         android:gravity="center"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/cb_cv"
+        app:layout_constraintTop_toBottomOf="@id/cb_pro2"
         app:layout_constraintStart_toStartOf="parent"
         android:text="应用"/>
+
+    <TextView
+        android:id="@+id/reset"
+        android:layout_width="72dp"
+        android:layout_height="38dp"
+        android:background="@color/teal_700"
+        android:layout_margin="24dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/cb_pro2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="重置策略"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

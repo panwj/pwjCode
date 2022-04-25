@@ -39,7 +39,7 @@ public class SimiImageActivity extends AppCompatActivity {
     private TextView mTimeView;
     private Handler mHandler;
     private int sampleSize;
-    private boolean dHash, aHash, opencv, desc;
+    private boolean dHash, aHash, opencv, desc, pro1, pro2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +57,8 @@ public class SimiImageActivity extends AppCompatActivity {
         aHash = sharedPreferences.getBoolean("aHash", true);
         desc = sharedPreferences.getBoolean("desc", true);
         opencv = sharedPreferences.getBoolean("opencv", false);
+        pro1 = sharedPreferences.getBoolean("pro1", false);
+        pro2 = sharedPreferences.getBoolean("pro2", false);
 
         mProgressBar = findViewById(R.id.progress_circular);
         updateProgressBar(View.VISIBLE);
@@ -91,7 +93,7 @@ public class SimiImageActivity extends AppCompatActivity {
         Logv.e("id = " + id);
         List<Picture> listSys = PhotoRepository.getPictures(context, id);
 
-        Logv.e("sampleSize = " + sampleSize + "   dHash = " + dHash + "  aHash = " + aHash + "   " + desc);
+        Logv.e("sampleSize = " + sampleSize + "   dHash = " + dHash + "  aHash = " + aHash + "  opencv = " + opencv + " desc = " + desc + " pro2 = " + pro2);
 
         for (Picture picture : listSys) {
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -137,8 +139,15 @@ public class SimiImageActivity extends AppCompatActivity {
 
         Logv.e("get finger time ---> " + (System.currentTimeMillis() - time) / 1000 + "    list.size() = " + list.size());
 
-        List<PictureGroup> groups = compareFinger(list, aHash, dHash, opencv, 2, 2);
-
+        List<PictureGroup> groups;
+        if (pro2) {
+            Logv.e("-----------> pro2");
+            groups = compareCVFinger(arrangementGroupsList1(compareFinger(list, aHash, dHash, opencv, 2, 2)));
+        } else {
+            Logv.e("-----------> normal");
+            groups = compareFinger(list, aHash, dHash, opencv, 2, 2);
+        }
+        arrangementGroupsList(groups);
         Logv.e("simiPicture() end : " + ((System.currentTimeMillis() - time) / 1000) + "   group size = " + groups.size());
 
         mHandler.post(new Runnable() {
@@ -182,6 +191,52 @@ public class SimiImageActivity extends AppCompatActivity {
                 PictureGroup group = new PictureGroup();
                 group.setPicture(temp);
                 groups.add(group);
+            }
+        }
+        return groups;
+    }
+
+    private List<PictureGroup> compareCVFinger(List<PictureGroup> groups) {
+        List<PictureGroup> tempGroups = new ArrayList<>();
+
+        for (PictureGroup pictureGroup : groups) {
+            if (pictureGroup.getPicture().size() <= 2) {
+                tempGroups.add(pictureGroup);
+                continue;
+            }
+
+            List<Picture> list = pictureGroup.getPicture();
+            for (int i = 0; i < list.size(); i++) {
+                Picture picture1 = list.get(i);
+
+                if (!picture1.isUse) {
+                    List<Picture> temp = new ArrayList<>();
+                    temp.add(picture1);
+
+                    for (int j = i + 1; j < list.size(); j++) {
+                        Picture picture2 = list.get(j);
+                        if (!picture2.isUse
+                                && ImageCVHistogram.comPareHist(picture1.mats[0], picture2.mats[0])
+                                && ImageCVHistogram.comPareHist(picture1.mats[1], picture2.mats[1])
+                                && ImageCVHistogram.comPareHist(picture1.mats[2], picture2.mats[2])) {
+                            temp.add(picture2);
+                            picture2.isUse = true;
+                        }
+                    }
+
+                    PictureGroup group = new PictureGroup();
+                    group.setPicture(temp);
+                    tempGroups.add(group);
+                }
+            }
+        }
+        return tempGroups;
+    }
+
+    private List<PictureGroup> arrangementGroupsList1(List<PictureGroup> groups) {
+        for (PictureGroup group : groups) {
+            for (Picture picture : group.getPicture()) {
+                picture.isUse = false;
             }
         }
         return groups;

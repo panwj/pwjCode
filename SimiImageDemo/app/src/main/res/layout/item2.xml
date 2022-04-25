@@ -8,6 +8,7 @@
         android:id="@+id/image"
         android:layout_width="72dp"
         android:layout_height="72dp"
+        android:scaleType="centerInside"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

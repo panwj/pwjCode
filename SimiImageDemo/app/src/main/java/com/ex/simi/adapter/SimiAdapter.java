@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ex.simi.R;
 import com.ex.simi.entry.Picture;
 import com.ex.simi.entry.PictureGroup;
+import com.ex.simi.util.Logv;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
 
     public void setData(List<PictureGroup> list) {
         if (list == null) return;
-
+        Logv.e("SimiAdapter -----> " + list.size());
         List<Picture> temp = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             Picture picture = new Picture();
