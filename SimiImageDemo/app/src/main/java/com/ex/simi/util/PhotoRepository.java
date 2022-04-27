@@ -80,7 +80,7 @@ public class PhotoRepository {
             picture.size = cursor.getLong(4);
             picture.takeDate = cursor.getLong(5);
 
-//            if (TextUtils.isEmpty(picture.path) || !new File(picture.path).exists()) continue;
+            if (TextUtils.isEmpty(picture.path) || !new File(picture.path).exists()) continue;
 
             result.add(picture);
         }

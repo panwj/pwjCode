@@ -127,8 +127,10 @@ public class SimiImageActivity extends AppCompatActivity {
                 options.inMutable = true;
                 options.inSampleSize = sampleSize;
                 Bitmap bitmap = BitmapFactory.decodeFile(picture.path, options);
+                if (bitmap == null) continue;
 
                 Bitmap cvBitmap = ImageHashUtil.unifiedBitmap(bitmap, 64, 64);
+                if (cvBitmap == null) continue;
                 Mat[] mats = ImageCVHistogram.calculateHistData(cvBitmap);
                 picture.mats = mats;
 
@@ -147,7 +149,7 @@ public class SimiImageActivity extends AppCompatActivity {
             Logv.e("-----------> normal");
             groups = compareFinger(list, aHash, dHash, opencv, 2, 2);
         }
-        arrangementGroupsList(groups);
+//        arrangementGroupsList(groups);
         Logv.e("simiPicture() end : " + ((System.currentTimeMillis() - time) / 1000) + "   group size = " + groups.size());
 
         mHandler.post(new Runnable() {
