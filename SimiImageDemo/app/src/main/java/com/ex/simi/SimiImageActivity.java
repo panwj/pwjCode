@@ -38,7 +38,7 @@ public class SimiImageActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private TextView mTimeView;
     private Handler mHandler;
-    private int sampleSize, simiGroup;
+    private int sampleSize, simiSize, simiGroup;
     private boolean dHash, aHash, opencv, desc, pro1, pro2;
 
     @Override
@@ -157,7 +157,7 @@ public class SimiImageActivity extends AppCompatActivity {
             public void run() {
                 if (isDestroyed() || isFinishing()) return;
                 updateProgressBar(View.GONE);
-                mTimeView.setText("扫描耗时 ：" + ((System.currentTimeMillis() - time) / 1000) + " 秒, " + simiGroup + "/" + groups.size() + "组，" + "总图：" + list.size());
+                mTimeView.setText("扫描耗时 ：" + ((System.currentTimeMillis() - time) / 1000) + " 秒, " + simiGroup + "/" + groups.size() + "组，" + simiSize + "/" + list.size() + "张");
                 mAdapter.setData(groups);
             }
         });
@@ -193,7 +193,10 @@ public class SimiImageActivity extends AppCompatActivity {
                 PictureGroup group = new PictureGroup();
                 group.setPicture(temp);
                 groups.add(group);
-                if (temp.size() > 1) simiGroup = simiGroup + 1;
+                if (temp.size() > 1) {
+                    simiGroup = simiGroup + 1;
+                    simiSize = simiSize + temp.size();
+                }
             }
         }
         return groups;
