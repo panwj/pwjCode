@@ -293,7 +293,7 @@ public class ImageHashUtil {
      * @param finger2
      * @return
      */
-    public static int hammingDistance(long finger1, long finger2, String type) {
+    public static int hammingDistance(long finger1, long finger2) {
         if (finger1 == 0 || finger2 == 0) return 100;
         int dist = 0;
         long result = finger1 ^ finger2;
@@ -301,7 +301,6 @@ public class ImageHashUtil {
             ++dist;
             result &= result - 1;
         }
-//        Logv.e("hammingDistance() dist = " + dist + "    " + type);
         return dist;
     }
 }

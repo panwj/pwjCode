@@ -16,9 +16,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ex.simi.PictureActivity;
 import com.ex.simi.R;
-import com.ex.simi.entry.Picture;
-import com.ex.simi.entry.PictureGroup;
-import com.ex.simi.util.Logv;
+import com.ex.simi.entry.DuplicatePhotoGroup;
+import com.ex.simi.entry.PhotoEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,21 +25,20 @@ import java.util.List;
 public class SimiAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    private List<Picture> mList;
+    private List<PhotoEntity> mList;
 
     public SimiAdapter(Context context) {
         this.mContext = context;
     }
 
-    public void setData(List<PictureGroup> list) {
+    public void setData(List<DuplicatePhotoGroup> list) {
         if (list == null) return;
-        Logv.e("SimiAdapter -----> " + list.size());
-        List<Picture> temp = new ArrayList<>();
+        List<PhotoEntity> temp = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            Picture picture = new Picture();
-            picture.type = i;
+            PhotoEntity picture = new PhotoEntity();
+            picture.groupId = i + 1;
             temp.add(picture);
-            temp.addAll(list.get(i).getPicture());
+            temp.addAll(list.get(i).getPhotoInfoList());
         }
         if (mList == null) mList = new ArrayList<>();
         mList.clear();
@@ -58,7 +56,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    return getItemViewType(position) == -1 ? 1 : 3;
+                    return getItemViewType(position) == 0 ? 1 : 3;
                 }
             });
         }
@@ -71,7 +69,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return mList.get(position).type;
+        return mList.get(position).groupId;
     }
 
     @NonNull
@@ -79,7 +77,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder;
         switch (viewType) {
-            case -1:
+            case 0:
                 holder = new HolderContent(LayoutInflater.from(mContext).inflate(R.layout.item2, null));
                 break;
             default:
@@ -112,8 +110,8 @@ public class SimiAdapter extends RecyclerView.Adapter {
             title = itemView.findViewById(R.id.group);
         }
 
-        public void setTitle(Picture picture) {
-            title.setText(String.valueOf(picture.type));
+        public void setTitle(PhotoEntity picture) {
+            title.setText(String.valueOf(picture.groupId));
         }
     }
 
@@ -125,7 +123,7 @@ public class SimiAdapter extends RecyclerView.Adapter {
             icon = itemView.findViewById(R.id.image);
         }
 
-        public void setIcon(Picture picture) {
+        public void setIcon(PhotoEntity picture) {
             Glide.with(mContext)
                     .load(picture.path)
                     .transition(DrawableTransitionOptions.withCrossFade())

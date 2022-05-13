@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ex.simi.cv.ImageCVHistogram;
 import com.ex.simi.entry.Photo;
+import com.ex.simi.entry.PhotoEntity;
 import com.ex.simi.normal.ImageAHash;
 import com.ex.simi.normal.ImageHashUtil;
 import com.ex.simi.normal.ImagePHash;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements PermissionHelper.
     }
 
     private void initData() {
-        final List<Photo> photos = PhotoRepository.getPhoto(this);
+        final List<PhotoEntity> photos = PhotoRepository.getPhoto(this);
         GridView gridView = (GridView) findViewById(R.id.grid);
         gridView.setAdapter(new Adapter(photos));
     }
@@ -114,9 +115,9 @@ public class MainActivity extends AppCompatActivity implements PermissionHelper.
     }
 
     private class Adapter extends BaseAdapter {
-        List<Photo> photos;
+        List<PhotoEntity> photos;
 
-        public Adapter(List<Photo> photos) {
+        public Adapter(List<PhotoEntity> photos) {
             this.photos = photos;
         }
 
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements PermissionHelper.
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Photo photo = photos.get(position);
+            PhotoEntity photo = photos.get(position);
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid_image, parent, false);
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements PermissionHelper.
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
 
             Glide.with(MainActivity.this)
-                    .load(photo.getPath())
+                    .load(photo.path)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(imageView);
 

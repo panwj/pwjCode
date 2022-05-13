@@ -6,11 +6,11 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.ex.simi.entry.Picture;
+import com.ex.simi.entry.PhotoEntity;
 
-@Database(entities = {Picture.class}, version = 1)
+@Database(entities = {PhotoEntity.class}, version = 1)
 public abstract class PictureDaoManager extends RoomDatabase {
-    public abstract PictureDao getPictureDao();
+    public abstract SimilarPhotoDao getPictureDao();
 
     private final static String DB_NAME = "picture_db_room";
     private static PictureDaoManager INSTANCE;
