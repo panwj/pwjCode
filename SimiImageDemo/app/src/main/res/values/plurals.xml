@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="file_deleted">
+        <item quantity="other">@string/vault_files_deleted_msg</item>
+        <item quantity="one">@string/vault_file_deleted_msg</item>
+    </plurals>
+
+    <plurals name="screenshots_photos_detele_content">
+        <item quantity="one">@string/screenshots_photos_detele_content</item>
+        <item quantity="other">@string/screenshots_photos_detele_content1</item>
+    </plurals>
+
+    <plurals name="duplicate_photos_delete_btn_text">
+        <item quantity="one">@string/duplicate_photos_delete_btn_one</item>
+        <item quantity="other">@string/duplicate_photos_delete_btn_more</item>
+    </plurals>
+
+    <plurals name="duplicate_photos_delete_title">
+        <item quantity="one">@string/duplicate_photos_delete_title_one</item>
+        <item quantity="other">@string/duplicate_photos_delete_title_more</item>
+    </plurals>
+
+</resources>

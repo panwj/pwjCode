@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">SimiImageDemo</string>
+    <string name="app_name">SimilarDemo</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_delete">Delete</string>
+    <string name="item_duplicate_photos">Duplicate Photos</string>
+    <string name="cancel">Cancel</string>
+    <string name="dlg_btn_cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="open_with">Open with</string>
+    <string name="deleting">Deleting…</string>
+    <string name="vault_file_deleted_msg">%d file was deleted.</string>
+    <string name="vault_files_deleted_msg">%d files were deleted.</string>
+    <string name="loading">Loading</string>
+    <string name="duplicate_photos_no_photo">Excellent photo quality, no cleaning required</string>
+    <string name="duplicate_photos_btn_delete">Delete %s</string>
+    <string name="duplicate_photos_delete_btn_one">Delete %d photo (%s)</string>
+    <string name="duplicate_photos_delete_btn_more">Delete %d photos (%s)</string>
+    <string name="duplicate_photos_group_title">%1$d / %2$d</string>
+    <string name="duplicate_photos_group_counts">%d Photos</string>
+    <string name="duplicate_photos_delete_title_one">Delete %d photo?</string>
+    <string name="duplicate_photos_delete_title_more">Delete %d photos?</string>
+    <string name="duplicate_photos_delete_tip_best">Not recommend to delete the best photo, cannot be undone after deletion</string>
+    <string name="duplicate_photos_delete_tip">The photo cannot be undone after deletion</string>
+    <string name="open_with_failed">Please download the relevant app to open the file</string>
+    <string name="inprogress">In progress</string>
+    <string name="screenshots_photos_detele_content">The photo cannot be undone after deletion</string>
+    <string name="screenshots_photos_detele_content1">The photos cannot be undone after deletion</string>
 </resources>

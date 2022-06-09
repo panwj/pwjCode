@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+
+    <color name="colorPrimary">#4B68FF</color>
+    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="md_trans_80">#cc000000</color> <!-- alpha 80% -->
+    <color name="md_black_1">#8a000000</color> <!-- alpha 54% -->
+    <color name="md_black_70_alpha">#4d000000</color><!-- alpha 70% -->
+    <color name="md_black_3">#1A000000</color> <!-- alpha 10% -->
+    <color name="transparent">#00000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="text_color_main">@color/md_trans_80</color>
+    <color name="main_frame_white_bg">@color/white</color>
+    <color name="main_frame_bg">@color/colorPrimary</color>
+    <color name="btn_bg_disabled">#ffdddddd</color>
+    <color name="common_btn_normal">@color/colorPrimary</color>
+    <color name="text_important_colors">#333333</color>
 </resources>

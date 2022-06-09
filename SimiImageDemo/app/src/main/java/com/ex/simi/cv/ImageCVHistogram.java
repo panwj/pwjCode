@@ -4,13 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ThumbnailUtils;
-import android.provider.MediaStore;
-import android.text.TextUtils;
 
-import com.ex.simi.R;
-import com.ex.simi.entry.Group;
-import com.ex.simi.entry.Photo;
 import com.ex.simi.util.Logv;
 
 import org.opencv.android.Utils;
@@ -21,96 +15,27 @@ import org.opencv.core.MatOfInt;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /*
-* public static void calcHist(List<Mat> images, MatOfInt channels, Mat mask, Mat hist, MatOfInt histSize, MatOfFloat ranges, boolean accumulate)
-*
-* 参数一：images，待统计直方图的图像数组，数组中所有的图像应具有相同的尺寸和数据类型，并且数据类型只能是CV_8U、CV_16U和CV_32F三种中的一种，但是不同图像的通道数可以不同。
-* 参数二：channels，需要统计的通道索引数组，第一个图像的通道索引从0到images[0].channels()-1，第二个图像通道索引从images[0].channels()到images[0].channels()+ images[1].channels()-1，以此类推。
-* 参数三：mask，可选的操作掩码，如果是空矩阵则表示图像中所有位置的像素都计入直方图中，如果矩阵不为空，则必须与输入图像尺寸相同且数据类型为CV_8U。
-* 参数四：hist，输出的统计直方图结果。
-* 参数五：histSize，存放每个维度直方图的数组的尺寸。
-* 参数六：ranges，每个图像通道中灰度值的取值范围。
-* 参数七：accumulate：是否累积统计直方图的标志，如果累积（true），则统计新图像的直方图时之前图像的统计结果不会被清除，该同能主要用于统计多个图像整体的直方图。
-*/
+ * public static void calcHist(List<Mat> images, MatOfInt channels, Mat mask, Mat hist, MatOfInt histSize, MatOfFloat ranges, boolean accumulate)
+ *
+ * 参数一：images，待统计直方图的图像数组，数组中所有的图像应具有相同的尺寸和数据类型，并且数据类型只能是CV_8U、CV_16U和CV_32F三种中的一种，但是不同图像的通道数可以不同。
+ * 参数二：channels，需要统计的通道索引数组，第一个图像的通道索引从0到images[0].channels()-1，第二个图像通道索引从images[0].channels()到images[0].channels()+ images[1].channels()-1，以此类推。
+ * 参数三：mask，可选的操作掩码，如果是空矩阵则表示图像中所有位置的像素都计入直方图中，如果矩阵不为空，则必须与输入图像尺寸相同且数据类型为CV_8U。
+ * 参数四：hist，输出的统计直方图结果。
+ * 参数五：histSize，存放每个维度直方图的数组的尺寸。
+ * 参数六：ranges，每个图像通道中灰度值的取值范围。
+ * 参数七：accumulate：是否累积统计直方图的标志，如果累积（true），则统计新图像的直方图时之前图像的统计结果不会被清除，该同能主要用于统计多个图像整体的直方图。
+ */
 
 public class ImageCVHistogram {
 
     private static final float STANDARD_VALUE = 0.09f;//相似阀值，可根据实际情况进行调整
 
-    public void testHistogramMatch(Context context) {
-        long time = System.currentTimeMillis();
-        Logv.e("testMatch() start create bitmap");
-//        Bitmap bmp1 = createBitmap("/storage/emulated/0/ScreenRecord/Screenshot/20220303_175403.jpg");
-//        Bitmap bmp2 = createBitmap("/storage/emulated/0/ScreenRecord/Screenshot/20220303_173440.jpg");
-        Bitmap bmp1 = createBitmap("/storage/emulated/0/Pictures/图片/BC214994-CFCE-451C-8789-89C3CB5BB154_4_5005_c.jpeg");
-        Bitmap bmp2 = createBitmap("/storage/emulated/0/Pictures/图片/207BC41F-ED8A-4394-A13B-8EA9D36BA6AD_1_105_c.jpeg");
-        Logv.e("testMatch() end create bitmap");
-        if (bmp1 == null || bmp2 == null) return;
-
-        Mat mat1 = calculateMatData(bmp1);
-        Mat mat2 = calculateMatData(bmp2);
-
-        comPareHist(mat1, mat2);
-
-        Logv.e("testMatch() 完成一次相似匹配所用时间(毫秒) ：" + (System.currentTimeMillis() - time));
-    }
-
-    public List<Group> find(Context context, List<Photo> photos) {
-        Logv.e("photos size : " + (photos != null ? photos.size() : 0));
-        long time = System.currentTimeMillis();
-        for (Photo photo : photos) {
-            if (TextUtils.isEmpty(photo.getPath()) || !new File(photo.getPath()).exists()) {
-                Logv.e("图片不存在");
-                continue;
-            }
-            Bitmap bitmap = createBitmap(photo.getPath());
-            if (bitmap == null) {
-                Logv.e("创建bitmap失败");
-                continue;
-            }
-            Mat mat = calculateMatData(bitmap);
-            photo.setMat(mat);
-        }
-        Logv.e("mat --> photos size : " + (photos != null ? photos.size() : 0));
-
-        List<Group> groups = new ArrayList<>();
-
-        for (int i = 0; i < photos.size(); i++) {
-            Photo photo = photos.get(i);
-
-            List<Photo> temp = new ArrayList<>();
-            temp.add(photo);
-
-            for (int j = i + 1; j < photos.size(); j++) {
-
-                Photo photo2 = photos.get(j);
-
-                boolean dist = comPareHist(photo.getMat(), photo2.getMat());
-
-                if (dist) {
-                    temp.add(photo2);
-                    photos.remove(photo2);
-                    j--;
-                }
-            }
-
-            Group group = new Group();
-            group.setPhotos(temp);
-            groups.add(group);
-        }
-
-        Logv.e("====================== \n\n " + groups.size());
-        Logv.e("opencv直方图判断相似照片耗时 ： " + ((System.currentTimeMillis() - time)/1000));
-        return groups;
-    }
-
     /**
      * 获取单通道直方图mat
+     *
      * @param bitmap
      * @return
      */
@@ -143,6 +68,7 @@ public class ImageCVHistogram {
 
     /**
      * 比较RGB通道直方图
+     *
      * @param bitmap
      * @return
      */
@@ -163,6 +89,7 @@ public class ImageCVHistogram {
 
     /**
      * Mat数据格式转换
+     *
      * @param srcMat
      * @return
      */
@@ -182,6 +109,7 @@ public class ImageCVHistogram {
 
     /**
      * 创建bitmap，width * height、创建方式会影响准确率以及效率
+     *
      * @param context
      * @param id
      * @return
@@ -205,6 +133,7 @@ public class ImageCVHistogram {
 
     /**
      * 创建bitmap，width * height、创建方式会影响准确率以及效率
+     *
      * @param path
      * @return
      */
@@ -250,7 +179,7 @@ public class ImageCVHistogram {
     }
 
     private static void recycleBitmap(Bitmap thumb) {
-        if(thumb != null && !thumb.isRecycled()){
+        if (thumb != null && !thumb.isRecycled()) {
             thumb.recycle();
             thumb = null;
         }

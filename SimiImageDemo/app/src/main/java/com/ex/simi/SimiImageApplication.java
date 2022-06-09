@@ -13,6 +13,8 @@ import org.opencv.android.OpenCVLoader;
 
 public class SimiImageApplication extends Application {
 
+    private static SimiImageApplication mInstance;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -22,6 +24,7 @@ public class SimiImageApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        mInstance = this;
         if (!OpenCVLoader.initDebug()) {
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);
         } else {
@@ -57,4 +60,8 @@ public class SimiImageApplication extends Application {
             Logv.e("init OpenCV onPackageInstall() : " + operation + "  " + callback.getPackageName());
         }
     };
+
+    public static SimiImageApplication getApp() {
+        return mInstance;
+    }
 }
